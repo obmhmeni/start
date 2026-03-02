@@ -4,13 +4,22 @@ function validateForm() {
     var email = document.getElementById("email").value;
     var password = document.getElementById("password").value;
 
-    if(name == "" || email == "" || password == "") {
+    if(name === "" || email === "" || password === "") {
         document.getElementById("result").innerHTML = "All fields are required!";
         return false;
     }
 
-    document.getElementById("result").innerHTML =
-        "Welcome " + name + "! Form Submitted Successfully 🚀";
+    fetch("http://localhost:3000/register", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name, email, password })
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById("result").innerHTML = data.message;
+    });
 
-    return false; // prevents page refresh
+    return false;
 }
